@@ -1,3 +1,0 @@
-/home/kushagra/Desktop/testlang/build/CMakeFiles/arg.dir
-/home/kushagra/Desktop/testlang/build/CMakeFiles/edit_cache.dir
-/home/kushagra/Desktop/testlang/build/CMakeFiles/rebuild_cache.dir
