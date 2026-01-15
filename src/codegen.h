@@ -1,8 +1,9 @@
-//
-// Created by kushagra on 1/16/26.
-//
+#ifndef CODEGEN_H
+#define CODEGEN_H
 
-#ifndef ARGON_CODEGEN_H
-#define ARGON_CODEGEN_H
+#include <stdio.h>
+#include "parser.h"
 
-#endif //ARGON_CODEGEN_H
+void codegen(NodeProg* prog, FILE* out);
+
+#endif
