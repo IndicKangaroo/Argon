@@ -39,7 +39,7 @@ Clone the repository and build:
 
 ```bash
 git clone https://github.com/IndicKangaroo/Argon
-cd argon
+cd Argon
 make
 ```
 
