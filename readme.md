@@ -38,7 +38,7 @@ sudo pacman -S gcc nasm
 Clone the repository and build:
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/IndicKangaroo/Argon
 cd argon
 make
 ```
