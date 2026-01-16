@@ -40,6 +40,9 @@ Clone the repository and build:
 ```bash
 git clone https://github.com/IndicKangaroo/Argon
 cd Argon
+mkdir build
+cd build
+cmake ..
 make
 ```
 
@@ -62,7 +65,7 @@ return result;
 ### Compiling and Running
 
 ```bash
-./arg example.arg
+./argon./out example.arg
 ./out
 echo $?
 ```
