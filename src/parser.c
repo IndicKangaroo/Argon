@@ -3,6 +3,8 @@
 #include "parser.h"
 #include "token.h"
 
+
+//custom malloc with error exit
 static void* xmalloc(size_t n) {
     void* p = malloc(n);
     if (!p) { perror("malloc"); exit(1); }
@@ -19,6 +21,7 @@ static Token* consume(Parser* p) {
     return &p->tokens[p->index++];
 }
 
+//move ahead
 static Token* try_consume(Parser* p, TokenType t) {
     Token* tok = peek(p, 0);
     if (tok && tok->type == t) {
@@ -51,6 +54,8 @@ static int prec(TokenType t) {
 
 static NodeExpr* parse_expr_prec(Parser* p, int min);
 
+
+//pratt parsing + normal
 static NodeExpr* parse_prefix(Parser* p) {
     Token* tok;
 
@@ -106,6 +111,8 @@ static NodeExpr* parse_prefix(Parser* p) {
     exit(1);
 }
 
+
+//precedence
 static NodeExpr* parse_expr_prec(Parser* p, int min) {
     NodeExpr* left = parse_prefix(p);
 
@@ -131,12 +138,16 @@ static NodeExpr* parse_expr_prec(Parser* p, int min) {
     return left;
 }
 
+
+//expression
 static NodeExpr* parse_expr(Parser* p) {
     return parse_expr_prec(p, 0);
 }
 
 static NodeStmt** parse_block(Parser* p, size_t* out_count);
 
+
+//if
 static NodeStmt* parse_if_stmt(Parser* p) {
     try_consume(p, TOKEN_IF);
 
@@ -175,6 +186,8 @@ static NodeStmt* parse_if_stmt(Parser* p) {
     return s;
 }
 
+
+//statement
 static NodeStmt* parse_stmt(Parser* p) {
     Token* tok;
     if (peek(p,0)->type == TOKEN_IF)
@@ -236,6 +249,7 @@ static NodeStmt* parse_stmt(Parser* p) {
     return s;
 }
 
+//scope
 static NodeStmt** parse_block(Parser* p, size_t* out_count) {
     if (!try_consume(p, TOKEN_LBRACE)) {
         fprintf(stderr, "expected '{'\n");
@@ -261,6 +275,7 @@ static NodeStmt** parse_block(Parser* p, size_t* out_count) {
     return list;
 }
 
+//main
 NodeProg* parse_prog(Parser* p) {
     NodeProg* prog = xmalloc(sizeof(NodeProg));
     prog->stmts = NULL;
@@ -279,6 +294,7 @@ NodeProg* parse_prog(Parser* p) {
     return prog;
 }
 
+//create tree
 Parser* parser_create(Token* toks, size_t count) {
     Parser* p = xmalloc(sizeof(Parser));
     p->tokens = toks;
