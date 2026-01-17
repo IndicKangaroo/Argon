@@ -11,7 +11,6 @@ static void gen_term(NodeTerm* t) {
             fprintf(out_file, "    mov eax, %d\n", t->data.int_lit->value);
             break;
         case TERM_IDENT:
-            // assume offset stored somewhere later
             fprintf(out_file, "    mov eax, [rbp - 4]\n"); // placeholder
             break;
     }
