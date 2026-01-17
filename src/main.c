@@ -7,21 +7,21 @@
 
 // ------------ print helpers ------------
 
-static void indent(int n) { while (n--) printf("  "); }
+// static void indent(int n) { while (n--) printf("  "); }
 
-static void print_expr(NodeExpr* e, int d);
+// static void print_expr(NodeExpr* e, int d);
 
-static void print_term(NodeTerm* t, int d) {
-    indent(d);
-    switch (t->type) {
-        case TERM_INT:
-            printf("INT(%d)\n", t->data.int_lit->value);
-            break;
-        case TERM_IDENT:
-            printf("IDENT(%s)\n", t->data.ident->name);
-            break;
-    }
-}
+// static void print_term(NodeTerm* t, int d) {
+//     indent(d);
+//     switch (t->type) {
+//         case TERM_INT:
+//             printf("INT(%d)\n", t->data.int_lit->value);
+//             break;
+//         case TERM_IDENT:
+//             printf("IDENT(%s)\n", t->data.ident->name);
+//             break;
+//     }
+// }
 
 static void print_expr(NodeExpr* e, int d) {
     indent(d);
@@ -115,21 +115,21 @@ int main(int argc, char** argv) {
 
     lexer_init(buf);
 
-    printf("\n==== TOKENS ====\n");
+    // printf("\n==== TOKENS ====\n");
     Token toks[4096];
     size_t n=0;
     for (;;) {
         toks[n] = lexer_next();
-        printf("%s", token_type_name(toks[n].type));
+        // printf("%s", token_type_name(toks[n].type));
         if (toks[n].type==TOKEN_INT_LITERAL)
-            printf("(%d)", toks[n].int_value);
+            // printf("(%d)", toks[n].int_value);
         if (toks[n].type==TOKEN_IDENTIFIER)
-            printf("(%s)", toks[n].lexeme);
-        printf("\n");
+            // printf("(%s)", toks[n].lexeme);
+        // printf("\n");
         if (toks[n].type==TOKEN_EOF) break;
         n++;
     }
-    printf("==============\n");
+    // printf("==============\n");
 
     Parser* p = parser_create(toks, n+1);
     NodeProg* prog = parse_prog(p);
