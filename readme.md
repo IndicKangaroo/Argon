@@ -46,7 +46,7 @@ cmake ..
 make
 ```
 
-This will create the `arg` executable.
+This will create the `argon` executable.
 
 ## Usage
 
@@ -63,6 +63,7 @@ return result;
 ```
 
 ### Compiling and Running
+To run save your argon file in the same extension with argon executable i.e. /build. then run following commands:
 
 ```bash
 ./argon./out example.arg
