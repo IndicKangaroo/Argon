@@ -5,7 +5,7 @@
 #include "token.h"
 #include "codegen.h"
 
------------- print helpers ------------
+//------------ print helpers ------------
 
 static void indent(int n) { while (n--) printf("  "); }
 
