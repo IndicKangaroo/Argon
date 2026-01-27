@@ -23,73 +23,73 @@
 //     }
 // }
 
-static void print_expr(NodeExpr* e, int d) {
-    indent(d);
-    switch (e->type) {
-        case EXPR_TERM:
-            printf("TERM:\n");
-            print_term(e->data.term, d+1);
-            break;
+// static void print_expr(NodeExpr* e, int d) {
+//     indent(d);
+//     switch (e->type) {
+//         case EXPR_TERM:
+//             printf("TERM:\n");
+//             print_term(e->data.term, d+1);
+//             break;
 
-        case EXPR_UNARY:
-            printf("UNARY(%s):\n", token_type_name(e->data.unary->op));
-            print_expr(e->data.unary->expr, d+1);
-            break;
+//         case EXPR_UNARY:
+//             printf("UNARY(%s):\n", token_type_name(e->data.unary->op));
+//             print_expr(e->data.unary->expr, d+1);
+//             break;
 
-        case EXPR_BIN:
-            printf("BIN(%s):\n", token_type_name(e->data.bin->op));
-            print_expr(e->data.bin->left, d+1);
-            print_expr(e->data.bin->right, d+1);
-            break;
-    }
-}
+//         case EXPR_BIN:
+//             printf("BIN(%s):\n", token_type_name(e->data.bin->op));
+//             print_expr(e->data.bin->left, d+1);
+//             print_expr(e->data.bin->right, d+1);
+//             break;
+//     }
+// }
 
-static void print_stmt(NodeStmt* s, int d) {
-    indent(d);
-    switch (s->type) {
+// static void print_stmt(NodeStmt* s, int d) {
+//     indent(d);
+//     switch (s->type) {
 
-        case STMT_LET:
-            printf("LET %s:\n", s->data.let->name);
-            print_expr(s->data.let->expr, d+1);
-            break;
+//         case STMT_LET:
+//             printf("LET %s:\n", s->data.let->name);
+//             print_expr(s->data.let->expr, d+1);
+//             break;
 
-        case STMT_EXPR:
-            printf("EXPR_STMT:\n");
-            print_expr(s->data.expr->expr, d+1);
-            break;
+//         case STMT_EXPR:
+//             printf("EXPR_STMT:\n");
+//             print_expr(s->data.expr->expr, d+1);
+//             break;
 
-        case STMT_RETURN:
-            printf("RETURN:\n");
-            print_expr(s->data.ret->expr, d+1);
-            break;
+//         case STMT_RETURN:
+//             printf("RETURN:\n");
+//             print_expr(s->data.ret->expr, d+1);
+//             break;
 
-        case STMT_IF:
-            printf("IF:\n");
-            indent(d+1);
-            printf("COND:\n");
-            print_expr(s->data.ifs->cond, d+2);
+//         case STMT_IF:
+//             printf("IF:\n");
+//             indent(d+1);
+//             printf("COND:\n");
+//             print_expr(s->data.ifs->cond, d+2);
 
-            indent(d+1);
-            printf("THEN BLOCK:\n");
-            for (size_t i = 0; i < s->data.ifs->then_count; i++)
-                print_stmt(s->data.ifs->then_stmts[i], d+2);
+//             indent(d+1);
+//             printf("THEN BLOCK:\n");
+//             for (size_t i = 0; i < s->data.ifs->then_count; i++)
+//                 print_stmt(s->data.ifs->then_stmts[i], d+2);
 
-            if (s->data.ifs->else_stmts) {
-                indent(d+1);
-                printf("ELSE BLOCK:\n");
-                for (size_t i = 0; i < s->data.ifs->else_count; i++)
-                    print_stmt(s->data.ifs->else_stmts[i], d+2);
-            }
-            break;
-    }
-}
+//             if (s->data.ifs->else_stmts) {
+//                 indent(d+1);
+//                 printf("ELSE BLOCK:\n");
+//                 for (size_t i = 0; i < s->data.ifs->else_count; i++)
+//                     print_stmt(s->data.ifs->else_stmts[i], d+2);
+//             }
+//             break;
+//     }
+// }
 
-static void print_prog(NodeProg* prog) {
-    printf("\n==== AST ====\n");
-    for (size_t i = 0; i < prog->count; i++)
-        print_stmt(prog->stmts[i], 1);
-    printf("=============\n\n");
-}
+// static void print_prog(NodeProg* prog) {
+//     printf("\n==== AST ====\n");
+//     for (size_t i = 0; i < prog->count; i++)
+//         print_stmt(prog->stmts[i], 1);
+//     printf("=============\n\n");
+// }
 
 // ------------ main ------------
 
