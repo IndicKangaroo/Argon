@@ -121,10 +121,10 @@ int main(int argc, char** argv) {
     for (;;) {
         toks[n] = lexer_next();
         // printf("%s", token_type_name(toks[n].type));
-        if (toks[n].type==TOKEN_INT_LITERAL)
-            // printf("(%d)", toks[n].int_value);
-        if (toks[n].type==TOKEN_IDENTIFIER)
-            // printf("(%s)", toks[n].lexeme);
+        // if (toks[n].type==TOKEN_INT_LITERAL)
+        //     printf("(%d)", toks[n].int_value);
+        // if (toks[n].type==TOKEN_IDENTIFIER)
+        //     printf("(%s)", toks[n].lexeme);
         // printf("\n");
         if (toks[n].type==TOKEN_EOF) break;
         n++;
@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
     // eval_prog(prog);
 
     // output assembly file
-    const char* asm_file = "out.asm";
+    const char* asm_file = "out.s";
     FILE* out = fopen(asm_file, "w");
     if (!out) { perror("fopen"); exit(1); }
 
@@ -147,9 +147,7 @@ int main(int argc, char** argv) {
     fclose(out);
 
     // assemble & link
-    system("nasm -felf64 out.asm -o out.o");
-    system("gcc out.o -o out");
+    system("gcc out.s -o out");
 
     printf("[build complete] run ./out and inspect exit code via echo $?\n");
 }
-
