@@ -189,8 +189,8 @@ static NodeStmt* parse_if_stmt(Parser* p) {
 
 //statement
 static NodeStmt* parse_stmt(Parser* p) {
-    Token* tok;
-    if (peek(p,0)->type == TOKEN_IF)
+    Token* tok = peek(p, 0);
+    if (tok && tok->type == TOKEN_IF)
         return parse_if_stmt(p);
 
     if ((tok = try_consume(p, TOKEN_LET))) {
@@ -260,6 +260,12 @@ static NodeStmt** parse_block(Parser* p, size_t* out_count) {
     size_t count = 0, cap = 0;
 
     while (!try_consume(p, TOKEN_RBRACE)) {
+        Token* tok = peek(p, 0);
+        if (!tok || tok->type == TOKEN_EOF) {
+            fprintf(stderr, "unexpected EOF, expected '}'\n");
+            exit(1);
+        }
+
         NodeStmt* st = parse_stmt(p);
         if (!st) { fprintf(stderr, "invalid stmt in block\n"); exit(1); }
 
