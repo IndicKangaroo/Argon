@@ -8,10 +8,10 @@ static void gen_expr(NodeExpr* e);
 static void gen_term(NodeTerm* t) {
     switch (t->type) {
         case TERM_INT:
-            fprintf(out_file, "    mov eax, %d\n", t->data.int_lit->value);
+            fprintf(out_file, "    movl $%d, %%eax\n", t->data.int_lit->value);
             break;
         case TERM_IDENT:
-            fprintf(out_file, "    mov eax, [rbp - 4]\n"); // placeholder
+            fprintf(out_file, "    movl -4(%%rbp), %%eax\n"); // placeholder
             break;
     }
 }
@@ -25,26 +25,26 @@ static void gen_expr(NodeExpr* e) {
         case EXPR_UNARY:
             gen_expr(e->data.unary->expr);
             if (e->data.unary->op == TOKEN_MINUS)
-                fprintf(out_file, "    neg eax\n");
+                fprintf(out_file, "    negl %%eax\n");
             break;
 
         case EXPR_BIN: {
             // left
             gen_expr(e->data.bin->left);
-            fprintf(out_file, "    push rax\n");
+            fprintf(out_file, "    pushq %%rax\n");
 
             // right
             gen_expr(e->data.bin->right);
-            fprintf(out_file, "    mov ecx, eax\n");
-            fprintf(out_file, "    pop rax\n");
+            fprintf(out_file, "    movl %%eax, %%ecx\n");
+            fprintf(out_file, "    popq %%rax\n");
 
             switch (e->data.bin->op) {
-                case TOKEN_PLUS:  fprintf(out_file, "    add eax, ecx\n"); break;
-                case TOKEN_MINUS: fprintf(out_file, "    sub eax, ecx\n"); break;
-                case TOKEN_STAR:  fprintf(out_file, "    imul eax, ecx\n"); break;
-                case TOKEN_SLASH: 
-                    fprintf(out_file, "    cdq\n");
-                    fprintf(out_file, "    idiv ecx\n");
+                case TOKEN_PLUS:  fprintf(out_file, "    addl %%ecx, %%eax\n"); break;
+                case TOKEN_MINUS: fprintf(out_file, "    subl %%ecx, %%eax\n"); break;
+                case TOKEN_STAR:  fprintf(out_file, "    imull %%ecx, %%eax\n"); break;
+                case TOKEN_SLASH:
+                    fprintf(out_file, "    cltd\n");
+                    fprintf(out_file, "    idivl %%ecx\n");
                     break;
             }
             break;
@@ -54,25 +54,25 @@ static void gen_expr(NodeExpr* e) {
 
 void codegen(NodeProg* prog, FILE* out) {
     out_file = out;
-    
-    fprintf(out_file, "global main\n");
-    fprintf(out_file, "section .text\n");
+
+    fprintf(out_file, ".global main\n");
+    fprintf(out_file, ".text\n");
     fprintf(out_file, "main:\n");
-    fprintf(out_file, "    push rbp\n");
-    fprintf(out_file, "    mov rbp, rsp\n");
+    fprintf(out_file, "    pushq %%rbp\n");
+    fprintf(out_file, "    movq %%rsp, %%rbp\n");
 
     for (size_t i = 0; i < prog->count; i++) {
         NodeStmt* s = prog->stmts[i];
         switch (s->type) {
             case STMT_LET:
                 gen_expr(s->data.let->expr);
-                fprintf(out_file, "    mov [rbp - 4], eax\n");
+                fprintf(out_file, "    movl %%eax, -4(%%rbp)\n");
                 break;
 
             case STMT_RETURN:
                 gen_expr(s->data.ret->expr);
-                fprintf(out_file, "    mov rsp, rbp\n");
-                fprintf(out_file, "    pop rbp\n");
+                fprintf(out_file, "    movq %%rbp, %%rsp\n");
+                fprintf(out_file, "    popq %%rbp\n");
                 fprintf(out_file, "    ret\n");
                 return;
 
@@ -82,7 +82,7 @@ void codegen(NodeProg* prog, FILE* out) {
         }
     }
 
-    fprintf(out_file, "    mov rsp, rbp\n");
-    fprintf(out_file, "    pop rbp\n");
+    fprintf(out_file, "    movq %%rbp, %%rsp\n");
+    fprintf(out_file, "    popq %%rbp\n");
     fprintf(out_file, "    ret\n");
 }
