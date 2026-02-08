@@ -149,15 +149,6 @@ echo $?
 
 ---
 
-## Roadmap
-
-- Optimizer
-- IR
-- Standard Library
-- Self-hosting
-
----
-
 ## License
 
 MIT License
