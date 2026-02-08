@@ -34,6 +34,22 @@ argon/
 │   └── test.arg
 └── README.md
 ```
+---
+## Language Specification
+
+The complete specification of the Argon programming language is documented in:
+
+```
+LANGUAGE.md
+```
+
+This file describes:
+
+- Syntax and grammar (EBNF)
+- Supported features
+- Data types
+- Compilation model
+- Limitations and roadmap
 
 ---
 
